@@ -1,0 +1,48 @@
+#!/bin/env ruby
+$LOAD_PATH.unshift "#{File.dirname(File.expand_path(__FILE__))}/../lib/"
+
+require 'vim-color'
+require 'optparse'
+
+#Exit if vim is not available
+abort "Cannot find vim!" unless system "which vim &> /dev/null"
+
+options = {}
+
+OptionParser.new do |opts|
+  opts.on "--syntax LANG" do |lang|
+    options[:syntax] = lang
+  end
+
+  opts.on "--input FILE" do |file|
+    options[:input_file] = file
+  end
+
+  opts.on "--output FILE" do |file|
+    options[:output_file] = file
+  end
+
+  opts.on "--use-css" do
+    options[:use_css] = true
+  end
+end.parse!(ARGV)
+
+if ARGV[0]
+  options[:input_file] = ARGV.shift
+end
+
+if ARGV[0]
+  options[:output_file] = ARGV.shift
+end
+
+if options[:input_file]
+  abort "Cannot find #{options[:input_file]}" unless File.exist? options[:input_file]
+
+  result = VimColor.color_file options[:input_file], options
+else
+  warn "Reading from standard input"
+
+  result = VimColor.color_stdin options
+end
+
+puts result if options[:output_file].nil?
