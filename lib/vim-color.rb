@@ -10,16 +10,7 @@ module VimColor
         f.write code
       end
 
-      result = color_file @default_input, options
-
-      if result == @default_output
-        colored_code = File.read @default_output
-        FileUtils.rm_f @default_input
-        FileUtils.rm_f @default_output
-        colored_code
-      else
-        result
-      end
+      color_file @default_input, options
     end
 
     def color_file input_file, options = {}
@@ -39,14 +30,17 @@ module VimColor
       elsif options[:input_file]
         options[:input_file] + ".html"
       else
-        @default_output
+        colored_code = File.read @default_output
+        FileUtils.rm_f @default_input
+        FileUtils.rm_f @default_output
+        colored_code
       end
     end
 
     def run_vim input_file, options
       vim_commands = set_commands(options).join(' ')
 
-      system "vim #{vim_commands} #{input_file} &> /dev/null"
+      system "vim -n -R #{vim_commands} #{input_file} &> /dev/null"
     end
 
     def set_commands options
@@ -65,7 +59,7 @@ module VimColor
       if options[:output_file]
         commands << "w #{options[:output_file]}"
       else
-        commands << "w"
+        commands << "w!"
       end
 
       commands << "q!" << "q!"

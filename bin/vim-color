@@ -10,19 +10,23 @@ abort "Cannot find vim!" unless system "which vim &> /dev/null"
 options = {}
 
 OptionParser.new do |opts|
-  opts.on "--syntax LANG" do |lang|
-    options[:syntax] = lang
-  end
-
-  opts.on "--input FILE" do |file|
+  opts.on "--input FILE", "Specify input file" do |file|
     options[:input_file] = file
   end
 
-  opts.on "--output FILE" do |file|
+  opts.on "--output FILE", "Specify output file" do |file|
     options[:output_file] = file
   end
 
-  opts.on "--use-css" do
+  opts.on "--[no-]line-numbers", "Output line numbers" do |lines|
+    options[:line_numbers] = lines
+  end
+
+  opts.on "--syntax LANG", "Set syntax language" do |lang|
+    options[:syntax] = lang
+  end
+
+  opts.on "--use-css", "Use CSS styles" do
     options[:use_css] = true
   end
 end.parse!(ARGV)
@@ -45,4 +49,10 @@ else
   result = VimColor.color_stdin options
 end
 
-puts result if options[:output_file].nil?
+if options[:input_file].nil? and options[:output_file].nil?
+  puts result
+elsif options[:print_output]
+  puts File.read result
+else
+  puts "Saved output to #{result}"
+end
