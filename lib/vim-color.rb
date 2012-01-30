@@ -54,6 +54,10 @@ module VimColor
         commands << "let html_use_css = 1"
       end
 
+      if options[:line_numbers]
+        commands << "let html_number_lines = 1"
+      end
+
       commands << "TOhtml"
 
       if options[:output_file]
