@@ -44,7 +44,7 @@ module VimColor
     end
 
     def set_commands options
-      commands = []
+      commands = ["let html_no_progress = 1"]
 
       if options[:syntax]
         commands << "set syntax=#{options[:syntax]}"
