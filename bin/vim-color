@@ -10,11 +10,11 @@ abort "Cannot find vim!" unless system "which vim &> /dev/null"
 options = {}
 
 OptionParser.new do |opts|
-  opts.on "--input FILE", "Specify input file" do |file|
+  opts.on "-i FILE", "--input FILE", "Specify input file" do |file|
     options[:input_file] = file
   end
 
-  opts.on "--output FILE", "Specify output file" do |file|
+  opts.on "-o FILE", "--output FILE", "Specify output file" do |file|
     options[:output_file] = file
   end
 
@@ -22,7 +22,7 @@ OptionParser.new do |opts|
     options[:line_numbers] = lines
   end
 
-  opts.on "--syntax LANG", "Set syntax language" do |lang|
+  opts.on "-s LANG", "--syntax LANG", "Set syntax language" do |lang|
     options[:syntax] = lang
   end
 
