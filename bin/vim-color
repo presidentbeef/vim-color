@@ -26,8 +26,9 @@ OptionParser.new do |opts|
     options[:syntax] = lang
   end
 
-  opts.on "--use-css", "Use CSS styles" do
-    options[:use_css] = true
+  opts.on "--[no-]css", "Use CSS styles" do |css|
+    options[:use_css] = css
+  end
   end
 end.parse!(ARGV)
 

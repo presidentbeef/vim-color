@@ -52,6 +52,8 @@ module VimColor
 
       if options[:use_css]
         commands << "let html_use_css = 1"
+      else
+        commands << "let html_use_css = 0"
       end
 
       if options[:line_numbers]
